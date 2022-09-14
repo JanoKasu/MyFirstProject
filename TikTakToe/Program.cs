@@ -21,7 +21,7 @@ class Program
     public bool spaceIsFree(char[] board, int position)
     {
         if (board[position] == ' ') return true;
-        else return false;
+        return false;
     }
 
     public bool isWinner(char[] board, char letter)
@@ -30,11 +30,17 @@ class Program
     }
 
     /*
-    public playerTurn()
     public compTurn()
     public selectRandom(board)
     */
-
+    public static int playerTurn()
+    {
+        Console.WriteLine($"X's turn! Choose a number 1-9 (0 to quit).");
+        int x = Int32.Parse(Console.ReadLine());
+        if (x == 0) { Console.WriteLine("You have quit the game."); throw new EndGameException(); }
+        else if (x < 1 || x > 9) throw new IndexOutOfRangeException();
+        return x;
+    }
 
     public static bool isBoardFull(char[] board)
     {
@@ -49,7 +55,7 @@ class Program
 
     static void Main(string[] args)
     {
-        bool win = false;
+        bool endGame = false;
         char[] board = new char[10];
         for (int i = 0; i < 10; i++)
         {
@@ -59,18 +65,26 @@ class Program
         {
             try
             {
-                if (isBoardFull(board)) { Console.WriteLine("Tie Game."); win = true; }
+                //Check if the board is full
+                if (isBoardFull(board)) { Console.WriteLine("Tie Game."); endGame = true; }
                 printBoard(board);
-                Console.WriteLine($"X's turn! Choose a number 1-9 (0 to quit).");
-                int x = Int32.Parse(Console.ReadLine());
-                if (x == 0) { Console.WriteLine("You have quit the game."); win = true; }
-                else if (x < 1 || x > 9) throw new IndexOutOfRangeException();
-                board[x] = 'X';
+
+                //Player turn
+                board[playerTurn()] = 'X';
+
+                //AI turn
+                printBoard(board);
+
             }
-            catch (Exception e)
+            catch (IndexOutOfRangeException e)
             {
                 Console.WriteLine(e.Message);
             }
-        } while (!win);
+            catch (EndGameException e)
+            {
+                Console.WriteLine(e.Message);
+                endGame = true;
+            }
+        } while (!endGame);
     }
 }
