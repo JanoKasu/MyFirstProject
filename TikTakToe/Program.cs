@@ -18,27 +18,47 @@ class Program
         Console.WriteLine("   |   |");
     }
 
-    public bool spaceIsFree(char[] board, int position)
+    public static bool spaceIsFree(char[] board, int position)
     {
         if (board[position] == ' ') return true;
         return false;
     }
 
-    public bool isWinner(char[] board, char letter)
+    public static bool isWinner(char[] board, char letter)
     {
         return false;
     }
 
-    /*
-    public compTurn()
-    public selectRandom(board)
-    */
-    public static int playerTurn()
+    public static int selectRandom(char[] board)
+    {
+        Random rand = new Random();
+        return rand.Next(1, 10);
+    }
+
+    public static int compTurn(char[] board)
+    {
+        bool x;
+        int choice;
+        do
+        {
+            choice = selectRandom(board);
+            x = spaceIsFree(board, choice);
+        } while (!x);
+        return choice;
+
+    }
+
+    public static int playerTurn(char[] board)
     {
         Console.WriteLine($"X's turn! Choose a number 1-9 (0 to quit).");
-        int x = Int32.Parse(Console.ReadLine());
-        if (x == 0) { Console.WriteLine("You have quit the game."); throw new EndGameException(); }
-        else if (x < 1 || x > 9) throw new IndexOutOfRangeException();
+        int x;
+        do
+        {
+            x = Int32.Parse(Console.ReadLine());
+            if (x == 0) { Console.WriteLine("You have quit the game."); throw new EndGameException(); }
+            else if (x < 1 || x > 9) throw new IndexOutOfRangeException();
+            else if (!spaceIsFree(board, x)) { Console.WriteLine("Choose a valid spot."); }
+        } while(!spaceIsFree(board, x));
         return x;
     }
 
@@ -61,19 +81,20 @@ class Program
         {
             board[i] = ' ';
         }
+        printBoard(board);
         do
         {
             try
             {
-                //Check if the board is full
-                if (isBoardFull(board)) { Console.WriteLine("Tie Game."); endGame = true; }
-                printBoard(board);
-
                 //Player turn
-                board[playerTurn()] = 'X';
+                board[playerTurn(board)] = 'X';
+                printBoard(board);
+                if (isBoardFull(board)) { Console.WriteLine("Tie Game."); throw new EndGameException(); }
 
                 //AI turn
+                board[compTurn(board)] = 'O';
                 printBoard(board);
+                if (isBoardFull(board)) { Console.WriteLine("Tie Game."); throw new EndGameException(); }
 
             }
             catch (IndexOutOfRangeException e)

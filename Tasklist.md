@@ -5,10 +5,10 @@
 [x] printBoard()
 [x] spaceIsFree()
 [x] isWinner()
-[ ] playerTurn()
+[x] playerTurn()
 [ ] compTurn()
-[ ] isBoardFull()
-[ ] selectRandom()
+[x] isBoardFull()
+[x] selectRandom()
 
 ## Requirements
 
