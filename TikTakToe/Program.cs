@@ -15,7 +15,7 @@ class Program
         Console.WriteLine("-----------");
         Console.WriteLine("   |   |");
         Console.WriteLine($" {board[7]} | {board[8]} | {board[9]}");
-        Console.WriteLine("   |   |");
+        Console.WriteLine("   |   |\n");
     }
 
     public static bool spaceIsFree(char[] board, int position)
@@ -89,12 +89,12 @@ class Program
                 //Player turn
                 board[playerTurn(board)] = 'X';
                 printBoard(board);
-                if (isBoardFull(board)) { Console.WriteLine("Tie Game."); throw new EndGameException(); }
+                if (isBoardFull(board)) { throw new EndGameException("Tie Game."); }
 
                 //AI turn
                 board[compTurn(board)] = 'O';
                 printBoard(board);
-                if (isBoardFull(board)) { Console.WriteLine("Tie Game."); throw new EndGameException(); }
+                if (isBoardFull(board)) { throw new EndGameException("Tie Game."); }
 
             }
             catch (IndexOutOfRangeException e)
