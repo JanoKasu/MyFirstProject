@@ -26,29 +26,45 @@ class Program
 
     public bool isWinner(char[] board, char letter)
     {
-        char[] players = new char[] { 'X', 'O' }
-        foreach (char c in players)
-        {
-        }
+        return false;
     }
 
+    /*
     public playerTurn()
-    {
+    public compTurn()
+    public selectRandom(board)
+    */
 
+
+    public static bool isBoardFull(char[] board)
+    {
+        int sum = 0;
+        foreach (char c in board)
+        {
+            if (c != ' ') sum++;
+        }
+        if (sum == 9) return true;
+        else return false;
     }
 
     static void Main(string[] args)
     {
         bool win = false;
         char[] board = new char[10];
+        for (int i = 0; i < 10; i++)
+        {
+            board[i] = ' ';
+        }
         do
         {
             try
             {
+                if (isBoardFull(board)) { Console.WriteLine("Tie Game."); win = true; }
                 printBoard(board);
                 Console.WriteLine($"X's turn! Choose a number 1-9 (0 to quit).");
                 int x = Int32.Parse(Console.ReadLine());
-                if (x < 1 || x > 9) throw new IndexOutOfRangeException();
+                if (x == 0) { Console.WriteLine("You have quit the game."); win = true; }
+                else if (x < 1 || x > 9) throw new IndexOutOfRangeException();
                 board[x] = 'X';
             }
             catch (Exception e)
