@@ -26,6 +26,21 @@ class Program
 
     public static bool isWinner(char[] board, char letter)
     {
+        if (board[1].Equals(letter) && board[5].Equals(letter) && board[9].Equals(letter)) return true;
+        else if (board[3].Equals(letter) && board[5].Equals(letter) && board[7].Equals(letter)) return true;
+
+        for (int i = 1; i <= 9; i+=3)
+        {
+            if (board[i].Equals(letter) && board[i + 1].Equals(letter) && board[i + 2].Equals(letter)) return true;
+            Console.WriteLine("Failed horizontal check on row " + i);
+        }
+
+        for (int i = 1; i <= 3; i++)
+        {
+            if (board[i].Equals(letter) && board[i + 3].Equals(letter) && board[i + 6].Equals(letter)) return true;
+            Console.WriteLine("Failed vertical check on column " + i);
+        }
+
         return false;
     }
 
@@ -54,10 +69,10 @@ class Program
         int x;
         do
         {
-            x = Int32.Parse(Console.ReadLine());
-            if (x == 0) { Console.WriteLine("You have quit the game."); throw new EndGameException(); }
-            else if (x < 1 || x > 9) throw new IndexOutOfRangeException();
-            else if (!spaceIsFree(board, x)) { Console.WriteLine("Choose a valid spot."); }
+            x = int.Parse(Console.ReadLine());
+            if (x == 0) throw new EndGameException("You have quit the game.");
+            else if (x < 1 || x > 9) throw new IndexOutOfRangeException("Choose a number between 1 and 9.");
+            else if (!spaceIsFree(board, x)) Console.WriteLine("Choose a valid spot.");
         } while(!spaceIsFree(board, x));
         return x;
     }
@@ -89,13 +104,18 @@ class Program
                 //Player turn
                 board[playerTurn(board)] = 'X';
                 printBoard(board);
-                if (isBoardFull(board)) { throw new EndGameException("Tie Game."); }
+                if (isWinner(board, 'X')) throw new EndGameException("X wins!");
+                else if (isBoardFull(board)) throw new EndGameException("Tie Game.");
 
                 //AI turn
                 board[compTurn(board)] = 'O';
                 printBoard(board);
-                if (isBoardFull(board)) { throw new EndGameException("Tie Game."); }
-
+                if (isWinner(board, 'O')) throw new EndGameException("O wins!");
+                else if (isBoardFull(board)) throw new EndGameException("Tie Game.");
+            }
+            catch (FormatException e)
+            {
+                Console.WriteLine(e.Message);
             }
             catch (IndexOutOfRangeException e)
             {
