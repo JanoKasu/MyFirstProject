@@ -32,35 +32,14 @@ class Program
         for (int i = 1; i <= 9; i+=3)
         {
             if (board[i].Equals(letter) && board[i + 1].Equals(letter) && board[i + 2].Equals(letter)) return true;
-            Console.WriteLine("Failed horizontal check on row " + i);
         }
 
         for (int i = 1; i <= 3; i++)
         {
             if (board[i].Equals(letter) && board[i + 3].Equals(letter) && board[i + 6].Equals(letter)) return true;
-            Console.WriteLine("Failed vertical check on column " + i);
         }
 
         return false;
-    }
-
-    public static int selectRandom(char[] board)
-    {
-        Random rand = new Random();
-        return rand.Next(1, 10);
-    }
-
-    public static int compTurn(char[] board)
-    {
-        bool x;
-        int choice;
-        do
-        {
-            choice = selectRandom(board);
-            x = spaceIsFree(board, choice);
-        } while (!x);
-        return choice;
-
     }
 
     public static int playerTurn(char[] board)
@@ -90,6 +69,7 @@ class Program
 
     static void Main(string[] args)
     {
+        AI myAI = new AI();
         bool endGame = false;
         char[] board = new char[10];
         for (int i = 0; i < 10; i++)
@@ -108,7 +88,7 @@ class Program
                 else if (isBoardFull(board)) throw new EndGameException("Tie Game.");
 
                 //AI turn
-                board[compTurn(board)] = 'O';
+                board[myAI.compTurn(board)] = 'O';
                 printBoard(board);
                 if (isWinner(board, 'O')) throw new EndGameException("O wins!");
                 else if (isBoardFull(board)) throw new EndGameException("Tie Game.");
