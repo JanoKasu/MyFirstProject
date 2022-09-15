@@ -3,8 +3,6 @@ using System.Collections.Generic;
 
 public class AI
 {
-    private bool x;
-    private int choice;
     int[] arr;
     public AI()
 	{
@@ -22,12 +20,13 @@ public class AI
         }
     }
 
+    /*
     public int selectRandom(int i, int j)
     {
         Random rand = new Random();
         return rand.Next(i, j);
     }
-
+    */
     
     public int selectRandom(List<int> list)
     {
@@ -35,25 +34,47 @@ public class AI
         return list[rand.Next(list.Count)];
     }
     
+    //public int testForWins()
 
     public int compTurn(char[] board)
     {
+        char[] boardCopy = new char[9];
+        Array.Copy(board, boardCopy, 9);
         /*
+        * Check to see if I can win
         * Check to see if I need to block
         * Determine the most profitable space
         */
 
-        foreach (int i in arr) {
-            if (Program.spaceIsFree(board, i)) return i;
+        foreach (int i in arr)
+        {
+            Console.WriteLine("Win " + i);
+            if (Program.spaceIsFree(boardCopy, i))
+            {
+                boardCopy[i] = 'O';
+                if (Program.isWinner(boardCopy, 'O')) return i;
+            }
+            boardCopy[i] = ' ';
         }
 
-        do
+        foreach (int i in arr)
         {
-            this.choice = selectRandom(1, 10);
-            this.x = Program.spaceIsFree(board, choice);
-        } while (!x);
-        return choice;
+            Console.WriteLine("Block " + i);
+            if (Program.spaceIsFree(boardCopy, i))
+            {
+                boardCopy[i] = 'X';
+                if (Program.isWinner(boardCopy, 'X')) return i;
+            }
+            boardCopy[i] = ' ';
+        }
 
+        foreach (int i in arr)
+        {
+            if (Program.spaceIsFree(boardCopy, i))
+            {
+                Console.WriteLine("Random " + i); return i;
+            }
+        }
+        return 0;
     }
-
 }
