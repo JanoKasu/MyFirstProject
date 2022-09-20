@@ -48,7 +48,6 @@ public class AI
 
         foreach (int i in moveList)
         {
-            Console.WriteLine("Win " + i);
             if (Program.spaceIsFree(boardCopy, i))
             {
                 boardCopy[i] = 'O';
@@ -59,7 +58,6 @@ public class AI
 
         foreach (int i in moveList)
         {
-            Console.WriteLine("Block " + i);
             if (Program.spaceIsFree(boardCopy, i))
             {
                 boardCopy[i] = 'X';
@@ -72,7 +70,7 @@ public class AI
         {
             if (Program.spaceIsFree(boardCopy, i))
             {
-                Console.WriteLine("Random " + i); return i;
+                return i;
             }
         }
         return 0;
